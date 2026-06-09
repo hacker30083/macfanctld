@@ -8,6 +8,7 @@ CC = gcc
 CFLAGS = -Wall
 SBIN_DIR = $(DESTDIR)/usr/sbin
 ETC_DIR = $(DESTDIR)/etc
+SERVICE_DIR = $(ETC_DIR)/systemd/system
 
 all: macfanctld
 
@@ -24,7 +25,10 @@ install:
 	chmod +x macfanctld
 	cp macfanctld $(SBIN_DIR)
 	cp macfanctl.conf $(ETC_DIR)
+	cp macfanctld.service $(SERVICE_DIR)
+	systemctl daemon-reload
+	systemctl enable --now macfanctld.service
 
 uninstall:
-	rm $(SBIN_DIR)/macfanctld $(INITD_DIR)/macfanctl $(ETC_DIR)/macfanctl.conf
+	rm $(SBIN_DIR)/macfanctld $(INITD_DIR)/macfanctl $(ETC_DIR)/macfanctl.conf $(SERVICE_DIR)/macfanctld.service
 
